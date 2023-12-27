@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="learn_qweb_templates.owl_main_component">
+        <div class="p-4 border">
+            <h3>This is rendered using OWL</h3>
+            <button class="btn btn-primary" t-on-click="increaseCounter">Counter
+                <span t-out="state.counter"/>
+            </button>
+        </div>
+        <hr/>
+        <OwlSubComponent>
+            <t t-slot="title">
+                <h2>Title</h2>
+            </t>
+            <t t-slot="date_author">
+                <div>
+                    <t t-set="article_date" t-value="new Date()"/>
+                    <small t-out="article_date.toLocaleString()"/>
+                </div>
+            </t>
+            <p>Extra</p>
+        </OwlSubComponent>
+        <OwlSubComponentChild>
+            <t t-slot="title">
+                <h2>Title</h2>
+            </t>
+            <t t-slot="date_author">
+                <div>
+                    <t t-set="article_date" t-value="new Date()"/>
+                    <small t-out="article_date.toLocaleString()"/>
+                </div>
+            </t>
+            <p>Extra</p>
+        </OwlSubComponentChild>
+    </t>
+    <t t-name="learn_qweb_templates.owl_sub_component">
+        <div class="p-4 border">
+            <h4>Owl Sub Component</h4>
+            <article class="alert alert-info">
+                <t t-set-slot="title"/>
+                <t t-set-slot="date_author"/>
+                <t t-slot="default"/>
+            </article>
+        </div>
+    </t>
+    <t t-inherit="learn_qweb_templates.owl_sub_component" t-inherit-mode="extension">
+        <xpath expr="//article" position="after">
+            <p>Added after Extension</p>
+        </xpath>
+    </t>
+
+    <t t-name="learn_qweb_templates.owl_sub_component_child" t-inherit="learn_qweb_templates.owl_sub_component" t-inherit-mode="primary">
+        <xpath expr="//article" position="attributes">
+            <attribute name="class" remove="alert-info" add="alert-primary" separator=" "/>
+        </xpath>
+    </t>
+
+    <t t-name="learn_qweb_templates.owl_with_backend_data">
+        <div class="p-4 border">
+            <h2>Orders</h2>
+            <hr/>
+            <li t-foreach="state.orders" t-as="order" t-key="order.id">
+                <strong t-out="order.name"/> - <strong t-out="order.date_order"/>
+            </li>
+        </div>
+
+        <div class="alert alert-info">
+            <h3>Form Submission</h3>
+            <form t-on-click="(e)=>this.submitForm(e)">
+                <input type="text" class="form-control mb-3" t-model="state.txtInput"/>
+                <button class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </t>
+</templates>
